@@ -61,14 +61,14 @@ func init() {
 		FullTimestamp: true,
 	})
 	// TODO Logging: Enable debug level of logging. Uncomment following line.
-	// logrus.SetLevel(logrus.DebugLevel)
+	logrus.SetLevel(logrus.DebugLevel)
 	// Set JSON formatter.
 	// TODO Logging: Enable json formatting for logging. Uncomment following line.
-	// logrus.SetFormatter(&logrus.JSONFormatter{})
+	logrus.SetFormatter(&logrus.JSONFormatter{})
 	// Set logging to a file. Comment out following 2 lines to log on the console.
 	// TODO Logging: Enable logging to a file. Uncomment following 2 lines.
-	// f := getLogFile()
-	// logrus.SetOutput(f)
+	f := getLogFile()
+	logrus.SetOutput(f)
 	// Register Prometheus metrics
 	// TODO Metrics: Register metrics. Uncomment following 3 lines.
 	// prometheus.Register(totalRequests)
@@ -97,7 +97,7 @@ func main() {
 	// TODO Metrics: Enable metrics middleware. Uncomment following line.
 	// r.Use(metricsMiddleware)
 	// TODO Logging: Enable logging middleware. Uncomment following line.
-	// r.Use(loggingMiddleware)
+	r.Use(loggingMiddleware)
 	log.Infof("starting observability app on: %s", appAddr)
 	http.ListenAndServe(appAddr, r)
 }
