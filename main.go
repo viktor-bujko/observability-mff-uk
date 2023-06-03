@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-	// "github.com/prometheus/client_golang/prometheus"
-	// "github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
@@ -71,9 +71,9 @@ func init() {
 	logrus.SetOutput(f)
 	// Register Prometheus metrics
 	// TODO Metrics: Register metrics. Uncomment following 3 lines.
-	// prometheus.Register(totalRequests)
-	// prometheus.Register(responseStatus)
-	// prometheus.Register(httpDuration)
+	prometheus.Register(totalRequests)
+	prometheus.Register(responseStatus)
+	prometheus.Register(httpDuration)
 	// Set tracing provider
 	// TODO Tracing: Configure tracing provider. Uncomment following 4 lines.
 	// tp, err := tracerProvider(tracingUrl)
@@ -91,11 +91,11 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", homeHandler)
 	// TODO Metrics: Expose metrics endpoint. Uncomment following line.
-	// r.Handle("/metrics", promhttp.Handler())
+	r.Handle("/metrics", promhttp.Handler())
 	// TODO Tracing: Enable tracing middleware. Uncomment following line.
 	// r.Use(tracingMiddleware)
 	// TODO Metrics: Enable metrics middleware. Uncomment following line.
-	// r.Use(metricsMiddleware)
+	r.Use(metricsMiddleware)
 	// TODO Logging: Enable logging middleware. Uncomment following line.
 	r.Use(loggingMiddleware)
 	log.Infof("starting observability app on: %s", appAddr)
