@@ -12,7 +12,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
-	// "log"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -30,7 +30,7 @@ const (
 	hdrUserAgent      = "User-Agent"
 	logFile           = "_logs/observability.log"
 	logFilePattern    = "_logs/%s.log"
-	// tracingUrl     = "http://grafana.edu.dobias.info:14268/api/traces"
+	//tracingUrl     = "http://grafana.edu.dobias.info:14268/api/traces"
 )
 
 var (
@@ -76,14 +76,14 @@ func init() {
 	prometheus.Register(httpDuration)
 	// Set tracing provider
 	// TODO Tracing: Configure tracing provider. Uncomment following 4 lines.
-	// tp, err := tracerProvider(tracingUrl)
-	// if err != nil {
-	//	log.Fatal(err)
-	// }
+	tp, err := tracerProvider(tracingUrl)
+	if err != nil {
+		log.Fatal(err)
+	}
 	// TODO Tracing: Enable tracing provider. Uncomment following line.
-	// otel.SetTracerProvider(tp)
+	otel.SetTracerProvider(tp)
 	// TODO Tracing: Enable cross-boundary context propagation for tracing. Uncomment following line.
-	// otel.SetTextMapPropagator(propagation.TraceContext{})
+	otel.SetTextMapPropagator(propagation.TraceContext{})
 }
 
 func main() {
@@ -93,7 +93,7 @@ func main() {
 	// TODO Metrics: Expose metrics endpoint. Uncomment following line.
 	r.Handle("/metrics", promhttp.Handler())
 	// TODO Tracing: Enable tracing middleware. Uncomment following line.
-	// r.Use(tracingMiddleware)
+	r.Use(tracingMiddleware)
 	// TODO Metrics: Enable metrics middleware. Uncomment following line.
 	r.Use(metricsMiddleware)
 	// TODO Logging: Enable logging middleware. Uncomment following line.
