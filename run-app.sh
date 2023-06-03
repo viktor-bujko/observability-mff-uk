@@ -1,4 +1,6 @@
-#!/bin/sh -eu
+#!/bin/bash 
+
+set -eu
 
 echo "Starting observability app..."
 echo "Logs are stored in the _logs/observability.log file."

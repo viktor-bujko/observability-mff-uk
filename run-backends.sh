@@ -1,4 +1,6 @@
-#!/bin/sh -eu
+#!/bin/bash 
+
+set -eu
 
 # TODO Modify following *_HOME variables to your environment. (*_HOME variable has a value of installation directory of the specific backend.)
 LOKI_HOME="${HOME}/dev/loki"
