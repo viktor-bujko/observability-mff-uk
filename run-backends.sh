@@ -3,10 +3,10 @@
 set -eu
 
 # TODO Modify following *_HOME variables to your environment. (*_HOME variable has a value of installation directory of the specific backend.)
-LOKI_HOME="${HOME}/dev/loki"
-PROMETHEUS_HOME="${HOME}/dev/prometheus"
-JAEGER_HOME="${HOME}/dev/jaeger"
-GRAFANA_HOME="${HOME}/dev/grafana"
+LOKI_HOME="./libs/loki-linux-amd64" #"${HOME}/dev/loki"
+PROMETHEUS_HOME="./libs/prometheus-2.37.8.linux-amd64" #"${HOME}/dev/prometheus"
+JAEGER_HOME="./libs/jaeger-1.33.0-linux-amd64" #"${HOME}/dev/jaeger"
+GRAFANA_HOME="./libs/grafana-9.5.2" #"${HOME}/dev/grafana"
 PWD=$(pwd)
 
 ./kill-backends.sh
@@ -22,7 +22,7 @@ echo "Starting Prometheus in the background..."
 "${PROMETHEUS_HOME}/prometheus" --config.file "${PWD}/_config/prometheus/prometheus.yml" --storage.tsdb.path="_tmp/prometheus/data/" > /dev/null 2>&1 &
 
 echo "Starting Jaeger in the background..."
-"${JAEGER_HOME}/jaeger" --collector.zipkin.host-port=:9411 > /dev/null 2>&1 &
+"${JAEGER_HOME}/jaeger-all-in-one" --collector.zipkin.host-port=:9411 > /dev/null 2>&1 &
 
 echo "Starting Grafana in the background..."
 "${GRAFANA_HOME}/bin/grafana" -homepath "${GRAFANA_HOME}" > /dev/null 2>&1 &

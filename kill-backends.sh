@@ -1,4 +1,6 @@
-#!/bin/bash -eu
+#!/bin/bash
+
+set -eu
 
 LOG_DIR="_logs"
 LOG_FILE="${LOG_DIR}/observability.log"

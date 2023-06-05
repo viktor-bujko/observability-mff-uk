@@ -1,4 +1,6 @@
-#!/bin/bash -eu
+#!/bin/bash 
+
+set -eu
 
 MAX_REQ=12
 URL="localhost:4040/"
